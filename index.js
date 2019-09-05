@@ -8,43 +8,27 @@ const watcher = chokidar.watch(ArgvPath, {
   ignored: /.git/
 });
 
-const goToDirCommit = () => {
-  exec(`cd ${ArgvPath}`, (err, stdout, stderr) => {
+const goToDirCommit = pathFile => {
+  exec(`cd ${ArgvPath} & git add . & git commit -m "${ticketN} - ${pathFile} Modification" & git push origin master`, (err, stdout, stderr) => {
     if (err) {
       console.log(err);
       return;
     }
     console.log(`stdout: ${stdout}`);
     console.log(`stderr: ${stderr}`);
-    exec('git add .', (err, stdout, stderr) => {
-      if (err) {
-        console.log(err);
-        return;
-      }
-      console.log(`stdout: ${stdout}`);
-      console.log(`stderr: ${stderr}`);
-
-      exec(`git commit -m "${ticketN} - Modification"`, (err, stdout, stderr) => {
-        if (err) {
-          console.log(err);
-          return;
-        }
-        console.log(`stdout: ${stdout}`);
-        console.log(`stderr: ${stderr}`);
-      });
-    });
   });
 };
 
 watcher
   .on('change', path => {
-    goToDirCommit();
+    goToDirCommit(path);
 
     console.log(`File ${path} has been changed`);
   })
   .on('unlink', path => {
-    goToDirCommit();
+    goToDirCommit(path);
 
     console.log(`File ${path} has been removed`);
-  });
-console.log(ArgvPath, ticketN);
+  })
+  .on('add', path => console.log(`Loading...`))
+  .on('ready', () => console.log('Initial scan complete. Ready for changes'));
