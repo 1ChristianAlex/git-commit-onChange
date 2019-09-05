@@ -1,0 +1,18 @@
+{
+  "name": "watcher-commit",
+  "version": "1.0.0",
+  "description": "A watcher and commit nodejs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Christian Alexsander",
+  "license": "ISC",
+  "dependencies": {
+    "chokidar": "^3.0.2",
+    "yargs": "^14.0.0"
+  },
+  "devDependencies": {
+    "@types/yargs": "^13.0.2"
+  }
+}
