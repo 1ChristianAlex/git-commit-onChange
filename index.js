@@ -4,19 +4,25 @@ const argv = require('yargs').argv;
 
 const ArgvPath = argv.path;
 const ticketN = argv.t;
+const commitName = argv.cm;
 const watcher = chokidar.watch(ArgvPath, {
   ignored: /.git/
 });
-
+let CommitVersion = 1;
 const goToDirCommit = pathFile => {
-  exec(`cd ${ArgvPath} & git add . & git commit -m "${ticketN} - ${pathFile} Modification" & git push origin master`, (err, stdout, stderr) => {
-    if (err) {
-      console.log(err);
-      return;
+  exec(
+    `cd ${ArgvPath} & git add . & git commit -m "${ticketN} - Modification ${commitName} v${CommitVersion}" & git push origin master`,
+    (err, stdout, stderr) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      console.log(`stdout: ${stdout}`);
+      console.log(`stderr: ${stderr}`);
+      console.log(`Commit version: V${CommitVersion}`);
+      CommitVersion++;
     }
-    console.log(`stdout: ${stdout}`);
-    console.log(`stderr: ${stderr}`);
-  });
+  );
 };
 
 watcher
